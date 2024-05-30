@@ -1,8 +1,6 @@
 import {
-  porcentajeCumplimientoServired,
-  CalcularMetaDiaMultired, CalcularMetaDiaServired, CalcularVentaProductosChanceMultired,
-  CalcularVentaProductosChanceServired, MapearProductosMultired, MapearProductosServired,
-  porcentajeCumplimientoMultired
+  porcentajeCumplimientoServired, CalcularMetaDiaMultired, CalcularMetaDiaServired, CalcularVentaProductosChanceMultired,
+  CalcularVentaProductosChanceServired, MapearProductosMultired, MapearProductosServired, porcentajeCumplimientoMultired
 } from '../utils/funciones'
 
 import { type MetasServired, type MetasMultired } from '../types/metas'
@@ -15,11 +13,9 @@ import { CardDia } from './iu/cardDia'
 import axios from 'axios'
 
 const DahsBoard = ({ company }: { company: Empresa }): JSX.Element => {
-  const [dataServired, setDataServired] = useState<MetasServired>() // * AQUI SE ASIGNA LA DATA PARA SEVIRED
-  const [dataMultired, setDataMultired] = useState<MetasMultired>() // * AQUI SE ASIGNA LA DATA PARA MULTIRED
+  const [dataServired, setDataServired] = useState<MetasServired>()
+  const [dataMultired, setDataMultired] = useState<MetasMultired>()
 
-  // TODO: Esta forma de tipar la respuesta funciona sin embargo al implementar un hook personalizado se podria mejorar
-  // TODO: por el momento quedara así para continuar con el renderizado de la información
   useEffect(() => {
     const fetchData = (): void => {
       void axios.get(`http://localhost:3000/api/metas/${company === 'Servired' ? '39628' : '39627'}`)
@@ -38,14 +34,13 @@ const DahsBoard = ({ company }: { company: Empresa }): JSX.Element => {
         })
     }
 
-    fetchData() // Fetch data immediately
+    fetchData()
 
-    const intervalId = setInterval(fetchData, 5 * 60 * 1000) // Fetch data every 5 minutes
+    const intervalId = setInterval(fetchData, 5 * 60 * 1000)
 
-    return () => { clearInterval(intervalId) } // TODO: limpia el intervalo para evitar fugas de memoria y errores cuando el componente se desmonta
+    return () => { clearInterval(intervalId) }
   }, [company])
 
-  // TODO: INTENTAR MANEJAR AMBAS EMPRESAS EN UN SOLO ESTADO ES COMPLICADO MEJOR PROBAR MEJOR IMPLEMENTACIÓN CON UN RENDERIZADO CONDICIONAL  */
   return (
     <section className='flex flex-col gap-4'>
 
@@ -57,11 +52,11 @@ const DahsBoard = ({ company }: { company: Empresa }): JSX.Element => {
               ? <>
                 {dataServired !== undefined ? <CardDia nombre='Meta Del Día Chance' venta={CalcularMetaDiaServired(dataServired)} /> : null}
                 {dataServired !== undefined ? <CardDia nombre='Venta Actual Día Chance' venta={CalcularVentaProductosChanceServired(dataServired)} /> : null}
-              </>
+                </>
               : <>
                 {dataMultired !== undefined ? <CardDia nombre='Meta Del Día Chance' venta={CalcularMetaDiaMultired(dataMultired)} /> : null}
                 {dataMultired !== undefined ? <CardDia nombre='Venta Actual Día Chance' venta={CalcularVentaProductosChanceMultired(dataMultired)} /> : null}
-              </>
+                </>
           }
         </article>
 
@@ -84,13 +79,13 @@ const DahsBoard = ({ company }: { company: Empresa }): JSX.Element => {
                   ? MapearProductosServired(dataServired).map(item => <CardMetas key={item.id} nombre={item.nombre} porcentaje={item.porcentaje} venta={item.venta} />)
                   : null
               }
-            </>
+              </>
             : <>
               {dataMultired !== undefined
                 ? MapearProductosMultired(dataMultired).map(item => <CardMetas key={item.id} nombre={item.nombre} porcentaje={item.porcentaje} venta={item.venta} />)
                 : null
               }
-            </>
+              </>
         }
       </section>
 
