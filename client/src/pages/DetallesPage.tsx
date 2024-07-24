@@ -6,12 +6,15 @@ import { useFilter } from '../hooks/useFilters'
 import { useAuth } from '../auth/AuthProvider'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const DetallesPage = (): JSX.Element => {
   const [data, setData] = useState<Sucursales>([])
 
   const { user } = useAuth()
   const company = user.empresa
+
+  const navigate = useNavigate()
 
   const { filteredPDV, searchCate, searchPDV, setSearchCate, setSearchPDV, handleClick, asc } = useFilter(data)
 
@@ -30,6 +33,10 @@ const DetallesPage = (): JSX.Element => {
       clearInterval(intervalId)
     }
   }, [])
+
+  const handleClicks = (CODIGO: number) => {
+    return () => { navigate(`/detalles/sucursal/${CODIGO}`) }
+  }
 
   return (
     <>
@@ -92,7 +99,10 @@ const DetallesPage = (): JSX.Element => {
               filteredPDV.map(pdv => {
                 return (
                   <TableRow key={pdv.CODIGO}>
-                    <TableCell className='text-center'>{pdv.CODIGO}</TableCell>
+                    <TableCell className='text-center'>
+                      <span className='text-xs text-green-500 dark:text-red-400 hover:text-blue-600 cursor-pointer'
+                      onClick={handleClicks(pdv.CODIGO)}>{(pdv.CODIGO)}</span>
+                      </TableCell>
                     <TableCell className='text-center'>{pdv.CATEGORIA}</TableCell>
                     <TableCell className='text-center'>{pdv.NOMBRE}</TableCell>
                     <TableCell className='text-center'>$ {pdv.meta.CHANCE}</TableCell>

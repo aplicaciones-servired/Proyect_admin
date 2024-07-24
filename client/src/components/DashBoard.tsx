@@ -15,7 +15,7 @@ const DahsBoard = ({ company }: { company: Empresa }): JSX.Element => {
 
   useEffect(() => {
     const fetchData = (): void => {
-      void axios.get(`http://172.20.1.110:3000/api/metas/${company === 'Servired' ? '39628' : '39627'}`)
+      void axios.get(`http://localhost:3000/api/metas/${company === 'Servired' ? '39628' : '39627'}`)
         .then(response => {
           setData(response.data as Dashboard)
         })
