@@ -4,7 +4,7 @@ services:
   web:
     image: nginx:mainline-alpine3.18-perl
     ports:
-      - "8080:80"
+      - "8089:80"
     volumes:
       - ./config:/etc/nginx/conf.d
       - ./client/dist:/usr/share/nginx/html
