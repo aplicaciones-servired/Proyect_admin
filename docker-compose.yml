@@ -6,10 +6,10 @@ services:
     ports:
       - "8089:80"
     volumes:
-      - ./config:/etc/nginx/conf.d
+      - ./config:/etc/nginx/nginx.conf
       - ./client/dist:/usr/share/nginx/html
   api:
-    image: node:latest
+    image: admin
     working_dir: /app
     volumes:
       - ./api:/app
