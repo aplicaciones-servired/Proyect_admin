@@ -1,18 +1,29 @@
+# version: '3.7'
+
+# services: 
+#   web:
+#     image: nginx:mainline-alpine3.18-perl
+#     ports:
+#       - "8089:80"
+#     volumes:
+#       - ./config:/etc/nginx/nginx.conf
+#       - ./client/dist:/usr/share/nginx/html
+#   api:
+#     image: admin
+#     working_dir: /app
+#     volumes:
+#       - ./api:/app
+#     ports:
+#       - "3000:3000"
+#     command: yarn start
+
 version: '3.7'
 
-services: 
-  web:
-    image: nginx:mainline-alpine3.18-perl
+services:
+  api:
+    build: ./api
+    image: admin
+    container_name: admin
+    restart: always
     ports:
       - "8089:80"
-    volumes:
-      - ./config:/etc/nginx/nginx.conf
-      - ./client/dist:/usr/share/nginx/html
-  api:
-    image: admin
-    working_dir: /app
-    volumes:
-      - ./api:/app
-    ports:
-      - "3000:3000"
-    command: yarn start
